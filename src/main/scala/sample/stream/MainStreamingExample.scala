@@ -1,15 +1,13 @@
 package sample.stream
 
-package sample.stream
+import java.util.concurrent.{ ExecutorService, Executors }
 
 import akka.actor._
 import akka.stream.ActorFlowMaterializer
 import akka.stream.scaladsl.Source
 import twitter4j._
+
 import scala.concurrent._
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.ConcurrentLinkedQueue
 
 object MainStreamingExample extends App {
 
@@ -21,7 +19,8 @@ object MainStreamingExample extends App {
 
   // create a TwitterStreamClient, that pubbish on the event bus
   val twitterStream = new TwitterStreamClient(system)
-  twitterStream.init // start getting status
+  twitterStream.init
+  // start getting status
 
   // create a Source, with an actor that listen items from the event bus
   val tweets: Source[Status] = Source(Props[StatusPublisherActor])

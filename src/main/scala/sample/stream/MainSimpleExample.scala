@@ -1,13 +1,13 @@
 package sample.stream
 
+import java.util.concurrent.{ ConcurrentLinkedQueue, ExecutorService, Executors }
+
 import akka.actor._
 import akka.stream.ActorFlowMaterializer
 import akka.stream.scaladsl.Source
 import twitter4j._
+
 import scala.concurrent._
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.ConcurrentLinkedQueue
 
 object Main extends App {
 
@@ -18,7 +18,8 @@ object Main extends App {
   implicit val materializer = ActorFlowMaterializer()(system)
 
   val startTime = System.nanoTime()
-  val userId = 410939902L // @headinthebox ~12K followers
+  val userId = 410939902L
+  // @headinthebox ~12K followers
   val output = new ConcurrentLinkedQueue[String]()
   println(s"Fetching follower profiles for $userId")
 
