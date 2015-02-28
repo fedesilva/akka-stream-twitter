@@ -2,6 +2,8 @@ package sample.stream
 
 import java.util.concurrent.{ ExecutorService, Executors }
 
+import java.util.concurrent.{ ExecutorService, Executors }
+
 import akka.actor._
 import akka.stream.ActorFlowMaterializer
 import akka.stream.scaladsl.Source
