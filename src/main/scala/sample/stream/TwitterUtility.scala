@@ -1,13 +1,14 @@
 package sample.stream
 
+import akka.actor.ActorSystem
+import com.typesafe.config.ConfigFactory
 import twitter4j._
 import twitter4j.auth.AccessToken
 import twitter4j.conf.ConfigurationBuilder
-import com.typesafe.config.ConfigFactory
+
 import scala.collection.JavaConverters._
-import scala.util.Try
 import scala.collection._
-import akka.actor.ActorSystem
+import scala.util.Try
 
 object CretentialsUtils {
   val config = ConfigFactory.load()
@@ -31,6 +32,7 @@ object TwitterClient {
 class TwitterStreamClient(val actorSystem: ActorSystem) {
   val factory = new TwitterStreamFactory(new ConfigurationBuilder().build())
   val twitterStream = factory.getInstance()
+
   def init = {
     twitterStream.setOAuthConsumer(CretentialsUtils.appKey, CretentialsUtils.appSecret)
     twitterStream.setOAuthAccessToken(new AccessToken(CretentialsUtils.accessToken, CretentialsUtils.accessTokenSecret))
@@ -39,11 +41,20 @@ class TwitterStreamClient(val actorSystem: ActorSystem) {
   }
 
   def simpleStatusListener = new StatusListener() {
-    def onStatus(status: Status) { actorSystem.eventStream.publish(status) }
+    def onStatus(status: Status) {
+      actorSystem.eventStream.publish(status)
+    }
+
     def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {}
+
     def onTrackLimitationNotice(numberOfLimitedStatuses: Int) {}
-    def onException(ex: Exception) { ex.printStackTrace }
+
+    def onException(ex: Exception) {
+      ex.printStackTrace
+    }
+
     def onScrubGeo(arg0: Long, arg1: Long) {}
+
     def onStallWarning(warning: StallWarning) {}
   }
 
