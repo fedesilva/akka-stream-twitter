@@ -1,7 +1,6 @@
 package sample.stream
 
 import akka.stream.actor.ActorPublisher
-import twitter4j._
 
 /**
  * A simple ActorPublisher[Status], that receives Status from the event bus
@@ -9,12 +8,12 @@ import twitter4j._
  *
  * TODO: This is a tiny example, so edge cases are not covered (yet).
  */
-class StatusPublisherActor extends ActorPublisher[Status] {
+class StatusPublisherActor extends ActorPublisher[Tweet] {
 
-  val sub = context.system.eventStream.subscribe(self, classOf[Status])
+  val sub = context.system.eventStream.subscribe(self, classOf[Tweet])
 
   override def receive: Receive = {
-    case s: Status => {
+    case s: Tweet => {
       if (isActive && totalDemand > 0) onNext(s)
     }
     case _ =>

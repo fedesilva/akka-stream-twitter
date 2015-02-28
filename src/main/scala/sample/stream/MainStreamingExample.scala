@@ -2,11 +2,10 @@ package sample.stream
 
 import java.util.concurrent.{ ExecutorService, Executors }
 
-import java.util.concurrent.{ ExecutorService, Executors }
-
 import akka.actor._
 import akka.stream.ActorFlowMaterializer
 import akka.stream.scaladsl.Source
+
 import twitter4j._
 
 import scala.concurrent._
@@ -25,9 +24,11 @@ object MainStreamingExample extends App {
   // start getting status
 
   // create a Source, with an actor that listen items from the event bus
-  val tweets: Source[Status] = Source(Props[StatusPublisherActor])
+  val statuses: Source[Tweet] = Source(Props[StatusPublisherActor])
+  statuses.filter(_.hashtags.contains(Hashtag("#Russia")))
+    .runForeach { t => println(t.author.handle + ": " + t.body) }
 
   // do the magic
-  tweets.runForeach { s => println(s.getText) }
+  //  statuses.runForeach { t => println(t.author.handle + ": " + t.body) }
 
 }

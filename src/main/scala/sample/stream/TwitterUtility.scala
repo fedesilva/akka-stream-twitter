@@ -10,6 +10,13 @@ import scala.collection.JavaConverters._
 import scala.collection._
 import scala.util.Try
 
+final case class Author(handle: String)
+final case class Hashtag(name: String)
+final case class Tweet(author: Author, timestamp: Long, body: String) {
+  def hashtags: Set[Hashtag] =
+    body.split(" ").collect { case t if t.startsWith("#") => Hashtag(t) }.toSet
+}
+
 object CretentialsUtils {
   val config = ConfigFactory.load()
   val appKey: String = config.getString("appKey")
@@ -41,8 +48,8 @@ class TwitterStreamClient(val actorSystem: ActorSystem) {
   }
 
   def simpleStatusListener = new StatusListener() {
-    def onStatus(status: Status) {
-      actorSystem.eventStream.publish(status)
+    def onStatus(s: Status) {
+      actorSystem.eventStream.publish(Tweet(Author(s.getUser.getScreenName), s.getCreatedAt.getTime, s.getText))
     }
 
     def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {}
