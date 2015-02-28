@@ -1,6 +1,6 @@
 package sample.stream
 
-import java.util.concurrent.{ ConcurrentLinkedQueue, ExecutorService, Executors }
+import java.util.concurrent.{ConcurrentLinkedQueue, ExecutorService, Executors}
 
 import akka.actor._
 import akka.stream.ActorFlowMaterializer
@@ -25,7 +25,7 @@ object Main extends App {
 
   val future = Source(() => TwitterHelpers.getFollowers(userId).get.toIterable.iterator)
     .grouped(100)
-    .mapAsyncUnordered { x => Future[List[User]](TwitterHelpers.lookupUsers(x.toList)) }
+    .mapAsyncUnordered { x => Future[List[User]](TwitterHelpers.lookupUsers(x.toList))}
     .mapConcat(identity)
     .runForeach(x => output.offer(x.getScreenName))
 

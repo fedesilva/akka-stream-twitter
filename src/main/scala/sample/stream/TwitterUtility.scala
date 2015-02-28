@@ -11,11 +11,15 @@ import scala.collection._
 import scala.util.Try
 
 final case class Author(handle: String)
+
 final case class Hashtag(name: String)
-final case class Tweet(author: Author, timestamp: Long, body: String) {
+
+case class Tweet(author: Author, timestamp: Long, body: String) {
   def hashtags: Set[Hashtag] =
-    body.split(" ").collect { case t if t.startsWith("#") => Hashtag(t) }.toSet
+    body.split(" ").collect { case t if t.startsWith("#") => Hashtag(t)}.toSet
 }
+
+final object EmptyTweet extends Tweet(Author(""), 0L, "")
 
 object CretentialsUtils {
   val config = ConfigFactory.load()
