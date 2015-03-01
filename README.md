@@ -17,5 +17,7 @@ accessTokenSecret = "<your access token secret>"
 
 and then `sbt run`.
 
+This repo contains 2 applications:
 
-All credits goes to Abhinav Ajgaonkar. You may want to read his original article [here](http://blog.abhinav.ca/blog/2015/02/19/scaling-with-akka-streams/).
+- A simple up-and-running example, taken from [Abhinav's blog](http://blog.abhinav.ca/blog/2015/02/19/scaling-with-akka-streams/).
+- A more elaborate example, described [in my blog](http://al333z.github.io/2015/02/28/TheDress/).
